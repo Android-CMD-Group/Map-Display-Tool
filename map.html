@@ -22,8 +22,9 @@
 				function loadData() {
 					var q = document.getElementById('query').value
 					q = encodeURIComponent(q);
-					$.getJSON("http://localhost:27080/radar/rawTrapData/_find?criteria="+q, function(data) {
+					$.getJSON("http://localhost:27080/radar/rawTrapData/_find?callback=?"+q, function(data) {
 						arrayOfOb = data.results
+
 						$.each(arrayOfOb, function(i, field) {
 							var myLatlng = new google.maps.LatLng(field.loc[0], field.loc[1]);
 							var marker = new google.maps.Marker({
