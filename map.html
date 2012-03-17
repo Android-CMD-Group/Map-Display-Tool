@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 	<head>
 		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -19,10 +19,15 @@
 		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAaQTqNAQbUj3g4IluwGresiY3iTZ0Gh1Q&sensor=false"></script>
 		<script type="text/javascript" src="jquery-1.7.1.js"></script>
 		<script type="text/javascript">
-				function loadData() {
-					var q = document.getElementById('query').value
-					q = encodeURIComponent(q);
-					$.getJSON("http://localhost:27080/radar/rawTrapData/_find?criteria="+q, function(data) {
+			function loadData() {
+				var q = document.getElementById('query').value
+				q = encodeURIComponent(q);
+
+				$.ajax({
+					url : "http://173.58.181.173:27080/radar/rawTrapData/_find?criteria=" + q,
+					type : "POST",
+					dataType : "jsonp",
+					success : function(data) {
 						arrayOfOb = data.results
 						$.each(arrayOfOb, function(i, field) {
 							var myLatlng = new google.maps.LatLng(field.loc[0], field.loc[1]);
@@ -32,8 +37,10 @@
 							});
 							marker.setMap(map);
 						});
-					});
-				}
+					}
+				});
+				document.getElementById("a").innerHTML = "hi"
+			}
 		</script>
 		<script type="text/javascript">
 			function initialize() {
@@ -52,6 +59,9 @@
 			Query:
 			<input id="query" type="text"/>
 			<input type="submit" value="GO" onclick="loadData()"/>
+		</div>
+		<div id="a" >
+			yello
 		</div>
 		<div id="map_canvas"></div>
 	</body>
