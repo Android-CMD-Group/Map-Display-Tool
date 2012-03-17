@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+		<style type="text/css">
+			html {
+				height: 100%
+			}
+			body {
+				height: 100%;
+				margin: 0;
+				padding: 0
+			}
+			#map_canvas {
+				height: 100%
+			}
+		</style>
+		<script type="text/javascript"
+		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAaQTqNAQbUj3g4IluwGresiY3iTZ0Gh1Q&sensor=false"></script>
+		<script type="text/javascript" src="jquery-1.7.1.js"></script>
+		<script type="text/javascript">
+				function loadData() {
+					var q = document.getElementById('query').value
+					q = encodeURIComponent(q);
+					$.getJSON("http://localhost:27080/radar/rawTrapData/_find?criteria="+q, function(data) {
+						arrayOfOb = data.results
+						$.each(arrayOfOb, function(i, field) {
+							var myLatlng = new google.maps.LatLng(field.loc[0], field.loc[1]);
+							var marker = new google.maps.Marker({
+								position : myLatlng,
+								title : "Hello World!"
+							});
+							marker.setMap(map);
+						});
+					});
+				}
+		</script>
+		<script type="text/javascript">
+			function initialize() {
+
+				var myOptions = {
+					center : new google.maps.LatLng(33, -117),
+					zoom : 8,
+					mapTypeId : google.maps.MapTypeId.ROADMAP
+				};
+				map = new google.maps.Map(document.getElementById("map_canvas"), myOptions);
+			}
+		</script>
+	</head>
+	<body onload="initialize()">
+		<div >
+			Query:
+			<input id="query" type="text"/>
+			<input type="submit" value="GO" onclick="loadData()"/>
+		</div>
+		<div id="map_canvas"></div>
+	</body>
+</html>
