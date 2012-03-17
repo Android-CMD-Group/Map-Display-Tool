@@ -19,22 +19,38 @@
 		src="http://maps.googleapis.com/maps/api/js?key=AIzaSyAaQTqNAQbUj3g4IluwGresiY3iTZ0Gh1Q&sensor=false"></script>
 		<script type="text/javascript" src="jquery-1.7.1.js"></script>
 		<script type="text/javascript">
-				function loadData() {
-					var q = document.getElementById('query').value
-					q = encodeURIComponent(q);
-					$.getJSON("http://localhost:27080/radar/rawTrapData/_find?callback=?"+q, function(data) {
-						arrayOfOb = data.results
+			function loadData() {
+				var q = document.getElementById('query').value
+				q = encodeURIComponent(q);
+				q ="criteria="+q+"&"
+				$.getJSON("http://localhost:27080/radar/rawTrapData/_find?"+q+"callback=?", function(data) {
+					arrayOfOb = data.results
 
-						$.each(arrayOfOb, function(i, field) {
-							var myLatlng = new google.maps.LatLng(field.loc[0], field.loc[1]);
-							var marker = new google.maps.Marker({
-								position : myLatlng,
-								title : "Hello World!"
-							});
-							marker.setMap(map);
+					$.each(arrayOfOb, function(i, field) {
+						var myLatlng = new google.maps.LatLng(field.loc[0], field.loc[1]);
+						var marker = new google.maps.Marker({
+							position : myLatlng,
+							title : "point"
 						});
+						
+						
+						
+						marker.setMap(map);
+						var circle = {
+							strokeColor : "#0000ff",
+							strokeOpacity : 0.8,
+							strokeWeight : 1,
+							fillColor : "#0000ff",
+							fillOpacity : 0.20,
+							map : map,
+							center : myLatlng,
+							radius : field.accuracy
+						};
+						var c = new google.maps.Circle(circle)
+						//c.setmap(map);
 					});
-				}
+				});
+			}
 		</script>
 		<script type="text/javascript">
 			function initialize() {
