@@ -22,8 +22,8 @@
 			function loadData() {
 				var q = document.getElementById('query').value
 				q = encodeURIComponent(q);
-				q ="criteria="+q+"&"
-				$.getJSON("http://localhost:27080/radar/rawTrapData/_find?"+q+"callback=?", function(data) {
+				q = "criteria=" + q + "&"
+				$.getJSON("http://localhost:27080/radar/rawTrapData/_find?" + q + "callback=?", function(data) {
 					arrayOfOb = data.results
 
 					$.each(arrayOfOb, function(i, field) {
@@ -32,10 +32,19 @@
 							position : myLatlng,
 							title : "point"
 						});
-						
-						
-						
+
 						marker.setMap(map);
+
+						var infowindow = new google.maps.InfoWindow({
+							content : "Speed: "+field.speed+"<br\>"+
+									  "Bearing: "+field.bearing+"<br\>"+
+									  "Phone ID: "+field.id+"<br\>"+
+									  "Time of Report: "+new Date(field.timeReported)+"<br\>"+
+									  "Time of Location: "+new Date(field.timeOfLocation)+"<br\>"
+						});
+						google.maps.event.addListener(marker, 'click', function() {
+							infowindow.open(map, marker);
+						});
 						var circle = {
 							strokeColor : "#0000ff",
 							strokeOpacity : 0.8,
