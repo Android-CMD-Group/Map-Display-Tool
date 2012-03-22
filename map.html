@@ -23,7 +23,7 @@
 				var q = document.getElementById('query').value
 				q = encodeURIComponent(q);
 				q = "criteria=" + q + "&"
-				$.getJSON("http://localhost:27080/radar/rawTrapData/_find?" + q + "callback=?", function(data) {
+				$.getJSON("http://173.58.181.173:27080/radar/rawTrapData/_find?" + q + "callback=?", function(data) {
 					arrayOfOb = data.results
 
 					$.each(arrayOfOb, function(i, field) {
